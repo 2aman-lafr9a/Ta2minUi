@@ -104,7 +104,7 @@ export default function TableTail({ parentFn }: { parentFn: (user: User) => void
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+        Array.from(statusFilter).includes(user.name)
       );
     }
 
