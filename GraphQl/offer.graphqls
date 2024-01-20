@@ -1,0 +1,8 @@
+type Offer {
+    id: ID!
+    name: String!
+    agency: Agency!
+    description: String!
+    price: Int!
+    date: String!
+}

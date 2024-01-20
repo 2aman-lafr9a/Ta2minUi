@@ -1,0 +1,19 @@
+type Mutation{
+    #    agencies
+    createAgency(name: String!): Agency!
+    updateAgency(id: ID!, name: String!): Agency!
+    deleteAgency(id: ID!): Agency!
+    #    offers
+    createOffer(name: String!, agency: ID!, description: String!, price: Int!, date: String!): Offer!
+    updateOffer(id: ID!, name: String!, agency: ID!, description: String!, price: Int!, date: String!): Offer!
+    deleteOffer(id: ID!): Offer!
+    #    teams
+    createTeam(name: String!, description: String!, owner: String!, teamLogo: String!, players: [ID]!): Team!
+    updateTeam(id: ID!, name: String!, description: String!, owner: String!, teamLogo: String!, players: [ID]!): Team!
+    deleteTeam(id: ID!): Team!
+    #    players
+    createPlayer(PlayerInput: PlayerInput!): Player!
+    updatePlayer(id: ID!, PlayerInput: PlayerInput!): Player!
+    deletePlayer(id: ID!): Player!
+}
+

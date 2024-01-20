@@ -1,0 +1,10 @@
+type Query {
+    getAgency(name: String!): Agency!
+    getAgencies: [Agency!]!
+    getOffer(name: String!): Offer!
+    getOffers: [Offer!]!
+    getTeam(name: String!): Team!
+    getTeams: [Team!]!
+    getPlayer(name: String!): Player!
+    getPlayers: [Player!]!
+}

@@ -1,0 +1,42 @@
+type Player {
+    id: String!
+    name: String!
+    age: String!
+    photo: String!
+    nationality: String!
+    flag: String!
+    overall: Int!
+    potential: Int!
+    position: String!
+    value: Int!
+    wage: Int!
+    preferred_foot: String!
+    work_rate: String!
+    body_type: String!
+    international_reputation: String!
+    skill_moves: String!
+    weak_foot: String!
+    height: Int!
+    weight: Int!
+}
+
+input PlayerInput{
+    name: String!
+    age: String!
+    photo: String!
+    nationality: String!
+    flag: String!
+    overall: Int!
+    potential: Int!
+    position: String!
+    value: Int!
+    wage: Int!
+    preferred_foot: String!
+    work_rate: String!
+    body_type: String!
+    international_reputation: String!
+    skill_moves: String!
+    weak_foot: String!
+    height: Int!
+    weight: Int!
+}

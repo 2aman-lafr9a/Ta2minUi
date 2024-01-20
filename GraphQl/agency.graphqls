@@ -1,0 +1,4 @@
+type Agency {
+    id: ID!
+    name: String!
+}
