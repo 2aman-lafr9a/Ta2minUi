@@ -61,6 +61,8 @@ const TeamManagerSignup = () => {
   // declare the team manager variable and set to teamManeger interface
 
   // declare the formData variable and set to formData interface
+  
+  
   function parentFn(childData: any) {
     //verify if the childData is the team object
     if (childData) {

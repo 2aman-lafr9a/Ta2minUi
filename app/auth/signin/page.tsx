@@ -18,34 +18,33 @@ const SigninForm = () => {
   }
 
   const handleSubmit = async (e: SyntheticEvent) => {
-    e.stopPropagation()
-    e.preventDefault()
+    e.stopPropagation();
+    e.preventDefault();
 
     try {
-      const requestOptions = {
-        method: 'POST',
-        body:  JSON.stringify(formData),
-        redirect: 'follow',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-       
+        const requestOptions = {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            redirect: 'follow' as RequestRedirect, // Set the correct type
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
 
-      const response = await fetch("http://aman.francecentral.cloudapp.azure.com:8080/api/v1/auth/login", requestOptions)
-      const result = await response.json()
-  
-      if (response.status === 200) {
-        toast.success(`Welcome ${result.userName}`)// Displays a success message
-        router.push('/')
-      } else {
-        toast.error(result.message) // Displays an error message
-      }
+        const response = await fetch("http://aman.francecentral.cloudapp.azure.com:8080/api/v1/auth/login", requestOptions);
+        const result = await response.json();
+
+        if (response.status === 200) {
+            toast.success(`Welcome ${result.userName}`); // Displays a success message
+            router.push('/');
+        } else {
+            toast.error(result.message); // Displays an error message
+        }
     } catch (error) {
-      toast.error(`An error occurred: ${error}`) // Displays an error message
+        toast.error(`An error occurred: ${error}`); // Displays an error message
     }
-  }
-  
+};
+
   // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
   //   e.preventDefault()
 

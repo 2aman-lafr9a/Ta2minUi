@@ -44,7 +44,6 @@ export const AddTeam = () => {
       id: users.length + 1,
       name: data.name,
       country: data.country,
-      status: data.status,
       age: data.age,
       avatar: data.avatar,
       email: data.email,
