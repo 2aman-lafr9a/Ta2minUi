@@ -297,7 +297,7 @@ const TeamManagerSignup = () => {
         </div>
 
       )}
-      {step === 1 || step === 2 && (
+       
         <div className="main-fader">
           <div className="loader">
             <svg viewBox="0 0 866 866" xmlns="http://www.w3.org/2000/svg">
@@ -367,7 +367,6 @@ const TeamManagerSignup = () => {
             </svg>
           </div>
         </div>
-      )}
     </div>
   );
 };

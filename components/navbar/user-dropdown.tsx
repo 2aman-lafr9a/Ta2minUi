@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import { DarkModeSwitch } from "./darkmodeswitch";
-
+import {DarkModeSwitcher} from "../darkModeSwitcher";
 export const UserDropdown = () => {
   return (
     <Dropdown>
@@ -43,9 +43,7 @@ export const UserDropdown = () => {
         <DropdownItem key="logout" color="danger" className="text-danger ">
           Log Out
         </DropdownItem>
-        <DropdownItem key="switch">
-          <DarkModeSwitch />
-        </DropdownItem>
+        
       </DropdownMenu>
     </Dropdown>
   );
