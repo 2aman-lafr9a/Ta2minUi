@@ -6,6 +6,18 @@ import '@/app/auth/pricing.css'
 import { FormEvent, useState } from "react"
 // import './pricing.css'
 import { Agency } from '@/models/agency'
+import { gql, useMutation} from "@apollo/client";
+
+const CREATEAGENCY = gql`
+    mutation createAgency($name: String!, $description: String!, $plan: String!) {
+        createAgency(name: $name, description: $description, plan: $plan) {
+            id
+            name
+            description
+            plan
+        }
+    }
+    `;
 
 const SignupAgencyForm = () => {
   const [agency, setAgency] = useState<Agency>({
@@ -17,6 +29,21 @@ const SignupAgencyForm = () => {
     companyDescription: "",
     subscription: 0,
   })
+
+  const createAgencyHandler = async ( e: FormEvent) => {
+    e.preventDefault();
+    console.log(agency);
+    const data = {
+        name: agency.companyName,
+        description: agency.companyDescription,
+        plan: agency.subscription.toString(),
+        };
+        console.log(data);
+        const [createAgency] = useMutation(CREATEAGENCY, {
+            variables: data,
+        });
+        createAgency();
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAgency({
@@ -33,11 +60,13 @@ const SignupAgencyForm = () => {
      setStep(2)// Move to the next step
    }
   
-  const hundelPlans = (plan:number) => {
+  const handelPlans = (plan:number) => {
     setAgency({
       ...agency,
       subscription: plan,
     })
+    createAgencyHandler;
+
      window.location.href = "/auth/signin"
    }
 
@@ -147,7 +176,7 @@ const SignupAgencyForm = () => {
                     <li className="aval">1 offer</li>
                     <li className="aval">10 contract</li>
                   </ul>
-                  <button type="button" className="select"  onClick={() => hundelPlans(1)}>
+                  <button type="button" className="select"  onClick={() => handelPlans(1)}>
                     Choose this plan
                   </button>
                 </div>
@@ -160,7 +189,7 @@ const SignupAgencyForm = () => {
                     <li className="aval">10 offer</li>
                     <li className="aval">100 contract</li>
                   </ul>
-                  <button type="button" className="select" onClick={() => hundelPlans(2)}>
+                  <button type="button" className="select" onClick={() => handelPlans(2)}>
 
                     Choose this plan
                   </button>
@@ -182,7 +211,7 @@ const SignupAgencyForm = () => {
                       justifyContent: "center",
                     }}
                   >
-                    <button type="button" className="select"  onClick={() => hundelPlans(3)} >
+                    <button type="button" className="select"  onClick={() => handelPlans(3)} >
                       Choose this plan
                     </button>
                   </div>
