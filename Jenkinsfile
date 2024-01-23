@@ -6,14 +6,15 @@ pipeline {
             steps {
                 echo 'Building...'
                 // Add your build commands here
-                docker build -t amanUi .
+                sh 'docker build -t amanUi .'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Testing...'
-                // there no test cases
+                // Add your test commands here
+                sh 'echo "No test cases"'
             }
         }
 
@@ -21,7 +22,7 @@ pipeline {
             steps {
                 echo 'Deploying...'
                 // Add your deployment commands here
-                docker run -d -p 3000:3000 amanUi
+                sh 'docker run -d -p 3000:3000 amanUi'
             }
         }
     }
