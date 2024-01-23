@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Deploying...'
                 // Add your deployment commands here
-                docker run -d -p 3000:3000 amanUi:todo
+                docker run -d -p 3000:3000 amanUi
             }
         }
     }
