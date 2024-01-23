@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building...'
                 // Add your build commands here
-                docker build -t amanUi:todo .
+                docker build -t amanUi .
             }
         }
 
