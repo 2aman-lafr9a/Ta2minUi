@@ -11,8 +11,45 @@ import { UsersIcon } from "@/components/icons/breadcrumb/users-icon";
 import { SettingsIcon } from "@/components/icons/sidebar/settings-icon";
 import { TableWrapper } from "@/components/table/table";
 import { AddPlayer } from "./add-player";
+import { gql, useQuery} from "@apollo/client";
+
+const GET_PLAYERS = gql`
+  query GetPlayers{
+      getPlayers {
+          id
+          name
+          age
+          photo
+          nationality
+          flag
+          overall
+          potential
+          position
+          value
+          wage
+          preferred_foot
+          work_rate
+          body_type
+          international_reputation
+          skill_moves
+          weak_foot
+          height
+          weight
+      }
+  }
+`;
 
 export const Players = () => {
+
+    let players = [];
+    const { loading, error, data } = useQuery(GET_PLAYERS);
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+    if (data) {
+        players = data.getPlayers;
+    }
+    console.log(players);
+
   return (
     <div className="my-14 lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-4">
       <ul className="flex">
