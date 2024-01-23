@@ -4,6 +4,19 @@ import {Checkbox} from "@nextui-org/react";
 import TableTail from "@/components/tabletail";
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { TeamManager } from "@/models/teammanager";
+import { gql, useMutation } from "@apollo/client";
+
+const CREATE_TEAM_MANAGER = gql`
+  mutation createTeamManager($name: String!, $surname: String!, $age: Int!, $team: ID!) {
+    createTeamManager(name: $name, surname: $surname, age: $age, team: $team) {
+        id
+        name
+        surname
+        age
+        team
+    }
+  }
+`;
 
 const TeamManagerSignup = () => {
   //     // Define a variable to store the account address
@@ -61,7 +74,7 @@ const TeamManagerSignup = () => {
   // declare the team manager variable and set to teamManeger interface
 
   // declare the formData variable and set to formData interface
-  
+
   
   function parentFn(childData: any) {
     //verify if the childData is the team object
@@ -94,6 +107,22 @@ const TeamManagerSignup = () => {
     teamId: 0,
   });
 
+  const [createTeamManager, { data }] = useMutation(CREATE_TEAM_MANAGER);
+
+  const createTeamManagerHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    console.log(teamManager);
+    await createTeamManager({
+        variables: {
+            name: teamManager.firstName,
+            surname: teamManager.lastName,
+            age: teamManager.age,
+            team: teamManager.teamId,
+        },
+    });
+  }
+
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -101,6 +130,7 @@ const TeamManagerSignup = () => {
       ...teamManager,
       [e.target.name]: e.target.value,
     });
+    createTeamManagerHandler(e).then(r => console.log(r));
   };
 
   const toStep2 = (e: FormEvent) => {
