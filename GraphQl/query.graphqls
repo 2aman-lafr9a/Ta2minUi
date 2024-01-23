@@ -1,10 +1,20 @@
 type Query {
+    #   Agency
     getAgency(name: String!): Agency!
     getAgencies: [Agency!]!
+    #   Offer
     getOffer(name: String!): Offer!
     getOffers: [Offer!]!
+    #   Team
     getTeam(name: String!): Team!
     getTeams: [Team!]!
+    #   Player
     getPlayer(name: String!): Player!
     getPlayers: [Player!]!
+    #   Rating
+    getRating(offerId: ID!, playerId: ID!): Rating!
+    getRatings: [Rating!]!
+    #   Team Manager
+    getTeamManager(id: ID!): TeamManager!
+    getTeamManagers: [TeamManager!]!
 }

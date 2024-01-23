@@ -1,0 +1,7 @@
+type TeamManager{
+    id: ID!
+    name: String!
+    surname: String!
+    age: Int!
+    team: ID!
+}

@@ -1,0 +1,7 @@
+type Rating{
+    id: ID
+    playerId: ID!
+    offerId: ID!
+    rating: Int!
+    createdAt: String
+}
