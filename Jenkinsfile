@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building...'
-        sh 'docker build -t amanUi .'
+        sh 'docker compose up -d --build'
       }
     }
 
@@ -18,7 +18,6 @@ pipeline {
     stage('Deploy') {
       steps {
         echo 'Deploying...'
-        sh 'docker run -d -p 3000:3000 amanUi'
       }
     }
 
