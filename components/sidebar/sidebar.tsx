@@ -6,11 +6,7 @@ import { HomeIcon } from "../icons/sidebar/home-icon";
 import { PaymentsIcon } from "../icons/sidebar/payments-icon";
 import { BalanceIcon } from "../icons/sidebar/balance-icon";
 import { AccountsIcon } from "../icons/sidebar/accounts-icon";
-import { CustomersIcon } from "../icons/sidebar/customers-icon";
-import { ProductsIcon } from "../icons/sidebar/products-icon";
-import { ReportsIcon } from "../icons/sidebar/reports-icon";
-import { DevIcon } from "../icons/sidebar/dev-icon";
-import { ViewIcon } from "../icons/sidebar/view-icon";
+
 import { SettingsIcon } from "../icons/sidebar/settings-icon";
 import { CollapseItems } from "./collapse-items";
 import { SidebarItem } from "./sidebar-item";
@@ -61,16 +57,22 @@ export const SidebarWrapper = () => {
             />
             <SidebarMenu title="Main Menu">
               <SidebarItem
-                isActive={pathname === "/accounts"}
-                title="Accounts"
+                isActive={pathname === "/players"}
+                title="Players"
                 icon={<AccountsIcon />}
-                href="accounts"
+                href="players"
               />
-            
+             <SidebarItem
+                isActive={pathname === "/offers"}
+                title="Offers"
+                icon={<PaymentsIcon />}
+                href="offers"
+              />
               <CollapseItems
                 icon={<BalanceIcon />}
-                items={["Banks Accounts", "Credit Cards", "Loans"]}
-                title="Balances"
+                items={["Signin", "TM Signup", "AG Signup"]}
+                hrefs={["/auth/signin", "/auth/signup/teammanager", "/auth/signup/agency"]}
+                title="Authentications"
               />
               
             </SidebarMenu>
@@ -78,7 +80,7 @@ export const SidebarWrapper = () => {
           
           
           </div>
-          <div className={Sidebar.Footer()}>
+          {/* <div className={Sidebar.Footer()}>
             <Tooltip content={"Settings"} color="primary">
               <div className="max-w-fit">
                 <SettingsIcon />
@@ -95,7 +97,7 @@ export const SidebarWrapper = () => {
                 size="sm"
               />
             </Tooltip>
-          </div>
+          </div> */}
         </div>
       </div>
       )

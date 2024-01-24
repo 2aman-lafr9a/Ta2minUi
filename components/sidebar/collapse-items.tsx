@@ -8,9 +8,10 @@ interface Props {
   icon: React.ReactNode;
   title: string;
   items: string[];
+  hrefs: string[];
 }
 
-export const CollapseItems = ({ icon, items, title }: Props) => {
+export const CollapseItems = ({ icon, items, title, hrefs }: Props) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,12 +37,13 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
         >
           <div className="pl-12">
             {items.map((item, index) => (
-              <span
+              <a
                 key={index}
                 className="w-full flex  text-default-500 hover:text-default-900 transition-colors"
+                href={`${hrefs[index]}`}
               >
                 {item}
-              </span>
+              </a>
             ))}
           </div>
         </AccordionItem>

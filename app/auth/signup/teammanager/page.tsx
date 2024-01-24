@@ -1,10 +1,11 @@
 "use client";
 import "@/app/auth/style.css";
 import {Checkbox} from "@nextui-org/react";
-import TableTail from "@/components/tabletail";
+import TableTail from "@/components/teams/teamsTable";
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { TeamManager } from "@/models/teammanager";
 import { gql, useMutation } from "@apollo/client";
+import toast from "react-hot-toast";
 
 const CREATE_TEAM_MANAGER = gql`
   mutation createTeamManager($name: String!, $surname: String!, $age: Int!, $team: ID!) {
@@ -17,6 +18,7 @@ const CREATE_TEAM_MANAGER = gql`
     }
   }
 `;
+
 
 const TeamManagerSignup = () => {
   //     // Define a variable to store the account address
@@ -112,14 +114,21 @@ const TeamManagerSignup = () => {
   const createTeamManagerHandler = async (e: FormEvent) => {
     e.preventDefault();
     console.log(teamManager);
-    await createTeamManager({
+    try {
+      const { data } = await createTeamManager({
         variables: {
-            name: teamManager.firstName,
-            surname: teamManager.lastName,
-            age: teamManager.age,
-            team: teamManager.teamId,
+          name: teamManager.firstName,
+          surname: teamManager.lastName,
+          age: teamManager.age,
+          team: teamManager.teamId,
         },
-    });
+      });
+      console.log(data);
+      toast.success("Team manager created successfully");
+    } catch (error) {
+      toast.error("An error occurred while creating the team manager");
+    }
+  
   }
 
 
@@ -130,7 +139,6 @@ const TeamManagerSignup = () => {
       ...teamManager,
       [e.target.name]: e.target.value,
     });
-    createTeamManagerHandler(e).then(r => console.log(r));
   };
 
   const toStep2 = (e: FormEvent) => {
@@ -141,6 +149,7 @@ const TeamManagerSignup = () => {
 
   const toStep1 = (e: FormEvent) => {
     e.preventDefault();
+    createTeamManagerHandler(e).then(r => console.log(r));
     setStep(1); // Move to the next step
   };
 

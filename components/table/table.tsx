@@ -11,6 +11,7 @@ import React from "react";
 import { columns, players } from "./data";
 import { RenderCell } from "./render-cell";
 
+
 export const TableWrapper = () => {
   return (
     <div className=" w-full flex flex-col gap-4">
