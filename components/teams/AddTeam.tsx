@@ -11,8 +11,9 @@ import {
 } from "@nextui-org/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import PlusIcon from "../tabletail/PlusIcon";
-import { users } from "../tabletail/data";
+import PlusIcon from "../icons/tailwindCss/PlusIcon";
+import { users } from "./teamsTable/data";
+import { gql, useMutation } from "@apollo/client";
 
 
 /// importing the API_GATEWAY_URL from the .env.local file
@@ -30,29 +31,59 @@ type FormData = {
   owner: string;
 };
 
+
+const CREATE_TEAM = gql`
+  mutation CreateTeam($input: CreateTeamInput!) {
+    createTeam(input: $input) {
+      id
+      name
+      description
+      owner
+    }
+  }
+`;
+
+
 export const AddTeam = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { register, handleSubmit, reset } = useForm<FormData>(); // Initialize react-hook-form
+  const [createTeam] = useMutation(CREATE_TEAM);
 
+  const handleCreateTeam = async (input: any) => {
+    try {
+      await createTeam({
+        variables: { input },
+      });
+      toast.success("Team created successfully");
+    } catch (error) {
+      toast.error("Error creating team");
+    }
+  }
+  
   // Handle form submission with an async function that takes event and form data
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     // Log the submitted data to the console
     console.log("Added Team:", data);
     /// open the file '../tabletail/data.ts' and add the data to the 'teams' array as a json object
     //
-    users.push({
-      id: users.length + 1,
-      name: data.name,
-      country: data.country,
-      age: data.age,
-      avatar: data.avatar,
-      email: data.email,
-      owner: data.owner,
-    });
+    // users.push({
+    //   id: users.length + 1,
+    //   name: data.name,
+    //   country: data.country,
+    //   age: data.age,
+    //   avatar: data.avatar,
+    //   email: data.email,
+    //   owner: data.owner,
+    // });
 
     const teamDescription = `Country: ${data.country}, Status: ${data.status}, Age: ${data.age}, Email: ${data.email}`;
 
-
+    const team = {
+      name: data.name,
+      description: teamDescription,
+      owner: data.owner,
+    };
+    handleCreateTeam(team);
     toast.success(`Team ${data.name} Added successfully`);
   };
 
