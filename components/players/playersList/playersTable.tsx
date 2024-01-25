@@ -24,14 +24,14 @@ import PlusIcon from "@/components/icons/tailwindCss//PlusIcon";
 import VerticalDotsIcon from "@/components/icons/tailwindCss/VerticalDotsIcon";
 import ChevronDownIcon from "@/components/icons/tailwindCss/ChevronDownIcon";
 import SearchIcon from "@/components/icons/tailwindCss/SearchIcon";
-import { columns, statusOptions } from "./data";
+import {columns, players, statusOptions} from "./data";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
 
 const GET_PLAYERS = gql`
-  query GetPlayers {
-    getPlayers {
+  query GetPlayers($page: Int!, $limit: Int!) {
+    getPlayers(page: $page, limit: $limit) {
       id
       name
       age
@@ -333,9 +333,9 @@ export default function PlayersTable() {
   const { loading, error, data } = useQuery(GET_PLAYERS);
   const [deletePlayer] = useMutation(DELETE_PLAYER);
 
-    if (data) {
-      setPlayers(data.getPlayers);
-     }
+  if (data) {
+    setPlayers(data.getPlayers);
+   }
 
   const handleDelete = async (id: string) => {
     try {
