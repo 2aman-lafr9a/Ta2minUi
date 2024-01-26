@@ -8,6 +8,8 @@ import React, { FormEvent, useState } from "react";
 import { Agency } from "@/models/agency";
 import { gql, useMutation } from "@apollo/client";
 import Web3 from "web3";
+
+
 const CREATE_AGENCY = gql`
   mutation createAgency($name: String!, $description: String!, $plan: String!) {
     createAgency(name: $name, description: $description, plan: $plan) {
@@ -169,8 +171,8 @@ const SignupAgencyForm = () => {
   // // Define a function to connect MetaMask
   const connectMetamask = async () => {
     try {
-      if (window.ethereum) {
-        const accounts = await ethereum.request({
+      if ((window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({
           method: "eth_requestAccounts",
         });
         account = accounts[0];
@@ -187,8 +189,8 @@ const SignupAgencyForm = () => {
   const connectContract = async () => {
     try {
       if (account) {
-        window.web3 = new Web3(window.ethereum);
-        contract = new window.web3.eth.Contract(contractABI, contractAddress);
+        (window as any).web3 = new Web3((window as any).ethereum);
+        contract = new (window as any).web3.eth.Contract(contractABI, contractAddress);
         console.log("Connected to contract at address: " + contractAddress);
       } else {
         console.log("Please connect to MetaMask first");
@@ -273,9 +275,9 @@ const SignupAgencyForm = () => {
     });
 
     try {
-      // await connectMetamask();
-      // await connectContract();
-      // await acceptRights(agency.subscription, agency.companyName); // Assuming acceptRights is an asynchronous function
+      await connectMetamask();
+      await connectContract();
+      await acceptRights(agency.subscription, agency.companyName); // Assuming acceptRights is an asynchronous function
       console.log("agency.subscription :");
       console.log(agency.subscription);
       // createAgencyHandler;

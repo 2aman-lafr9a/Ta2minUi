@@ -8,7 +8,7 @@ import { gql, useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import Web3 from 'web3';
 
-
+ 
 const CREATE_TEAM_MANAGER = gql`
   mutation createTeamManager(
     $name: String!
@@ -188,12 +188,13 @@ const TeamManagerSignup = () => {
   //     // Define the contract instance
       let contract:any;
        // execute the script web3 '
+       
     
   // // Define a function to connect MetaMask
       const connectMetamask = async () => {
     try {
-        if (window.ethereum) {
-            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        if ((window as any).ethereum) {
+            const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
             account = accounts[0];
             console.log(account);
 
@@ -209,8 +210,8 @@ const TeamManagerSignup = () => {
   const connectContract = async () => {
     try {
         if (account) {
-            window.web3 = new Web3(window.ethereum);
-            contract = new window.web3.eth.Contract(contractABI, contractAddress);
+          (window as any).web3 = new Web3((window as any).ethereum);
+            contract = new (window as any).web3.eth.Contract(contractABI, contractAddress);
              console.log("Connected to contract at address: " + contractAddress);
         } else {
              console.log("Please connect to MetaMask first");

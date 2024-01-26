@@ -39,4 +39,5 @@ input PlayerInput{
     weak_foot: String!
     height: Int!
     weight: Int!
+    
 }
