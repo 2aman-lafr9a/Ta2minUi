@@ -77,7 +77,7 @@ export const AddTeam = () => {
     // });
 
     const teamDescription = `Country: ${data.country}, Status: ${data.status}, Age: ${data.age}, Email: ${data.email}`;
-
+      
     const team = {
       name: data.name,
       description: teamDescription,

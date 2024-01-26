@@ -39,7 +39,7 @@ export const NavbarWrapper = ({ children }: Props) => {
             <DarkModeSwitcher />
           </NavbarContent>
           <NavbarContent justify="end">
-            <NotificationsDropdown />
+            {/* <NotificationsDropdown /> */}
             <UserDropdown />
           </NavbarContent>
         </Navbar>

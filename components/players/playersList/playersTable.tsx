@@ -325,7 +325,7 @@ const playersTmp = [
   },
   // Add more players as needed
 ];
-type Player = (typeof players)[0];
+type Player = (typeof playersTmp)[0];
 
 export default function PlayersTable() {
 
@@ -445,7 +445,7 @@ export default function PlayersTable() {
         case "actions":
           return (
             <div className="flex items-center gap-4 ">
-              <div>
+              {/* <div>
                 <Tooltip content="Details">
                   <button onClick={() => console.log("View player", player.id)}>
                     <EyeIcon size={20} fill="#979797" />
@@ -458,7 +458,7 @@ export default function PlayersTable() {
                     <EditIcon size={20} fill="#979797" />
                   </button>
                 </Tooltip>
-              </div>
+              </div> */}
               <div>
                 <Tooltip content="Delete player" color="danger">
                   <button onClick={() => handleDelete(player.id)}>

@@ -190,27 +190,27 @@ export default function OfferGrid() {
   const [offers, setOffers] = useState(sampleOffers);
   const { loading, error, data } = useQuery(GET_OFFERS);
 
-  useEffect(() => {
-    if (loading) return;
-    if (error) {
-      toast.error("Error loading offers. Here's some static data.");
-      setOffers(sampleOffers);
-    } else {
-      console.log(data);
-      setOffers(data.getOffers);
-    }
-  }, [loading, error, data]);
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (error) {
+  //     toast.error("Error loading offers. Here's some static data.");
+  //     setOffers(sampleOffers);
+  //   } else {
+  //     console.log(data);
+  //     setOffers(data.getOffers);
+  //   }
+  // }, [loading, error, data]);
 
-  if (loading)
-    return (
-      <div>
-        <Spinner
-          className="flex justify-center items-center"
-          color="primary"
-          size="lg"
-        />
-      </div>
-    );
+  // if (loading)
+  //   return (
+  //     <div>
+  //       <Spinner
+  //         className="flex justify-center items-center"
+  //         color="primary"
+  //         size="lg"
+  //       />
+  //     </div>
+  //   );
 
   return (
     <div className="gap-5 grid grid-cols-2 sm:grid-cols-3">
