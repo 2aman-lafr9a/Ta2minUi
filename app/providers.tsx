@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+ import * as React from "react";
 import { NextUIProvider } from "@nextui-org/system";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ThemeProviderProps } from "next-themes/dist/types";
@@ -30,7 +30,7 @@ export interface ProvidersProps {
 
 export function Providers({ children, themeProps }: ProvidersProps) {
   return (
-    <NextUIProvider>
+     <NextUIProvider>
         <ApolloProvider client={client}>
           <NextThemesProvider defaultTheme="system" attribute="class" {...themeProps}>
             <Layout>
@@ -40,5 +40,6 @@ export function Providers({ children, themeProps }: ProvidersProps) {
           </NextThemesProvider>
         </ApolloProvider>
     </NextUIProvider>
+ 
   );
 }

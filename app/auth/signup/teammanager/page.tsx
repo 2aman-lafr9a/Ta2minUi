@@ -7,6 +7,8 @@ import { TeamManager } from "@/models/teammanager";
 import { gql, useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import Web3 from 'web3';
+ import { ethers } from 'ethers';
+
 
  
 const CREATE_TEAM_MANAGER = gql`
@@ -488,7 +490,7 @@ const TeamManagerSignup = () => {
               <form onSubmit={toStep1}>
                 {/* Checkbox for accepting terms */}
 
-                <Checkbox is color="danger" className="pl-10">
+                <Checkbox color="danger" className="pl-10">
                   <span className="w-[30%] text-small text-default-400 m-3">
                     Accept Terms and Conditions
                   </span>

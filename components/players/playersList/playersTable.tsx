@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Suspense } from "react";
 import { DeleteIcon } from "@/components/icons/table/delete-icon";
 import { EditIcon } from "@/components/icons/table/edit-icon";
@@ -344,17 +344,17 @@ export default function PlayersTable() {
     setPlayers(data)
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     try {
       await deletePlayer({ variables: { id } });
       toast.success(`Player ${id} deleted successfully`);
-        ///slice the array to remove the deleted player
+      ///slice the array to remove the deleted player
       const newPlayers = players.filter((player) => player.id !== id);
       setPlayers(newPlayers);
     } catch (e) {
       toast.error(`An error occurred while deleting player ${id}`);
     }
-  };
+  }, [deletePlayer, players, setPlayers]);
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -479,7 +479,7 @@ export default function PlayersTable() {
           return cellValue;
       }
     },
-    []
+    [handleDelete]
   );
 
   const onNextPage = React.useCallback(() => {

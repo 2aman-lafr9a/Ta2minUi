@@ -222,7 +222,7 @@ const SignupAgencyForm = () => {
           .acceptRights(account, name, subscribtion_type.toString())
           .send({
             from: account,
-            value: window.web3.utils.toWei(prix.toString(), "ether"),
+            value: (window as any).web3.utils.toWei(prix.toString(), "ether"),
           });
       } else {
       }
