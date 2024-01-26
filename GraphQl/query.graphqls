@@ -10,7 +10,7 @@ type Query {
     getTeams: [Team!]!
     #   Player
     getPlayer(name: String!): Player!
-    getPlayers(page: Int!, limit: Int!): [Player!]!
+    getPlayers(team_id: String, page: Int!, limit: Int!): [Player!]!
     #   Rating
     getRating(offerId: ID!, playerId: ID!): Rating!
     getRatings: [Rating!]!
