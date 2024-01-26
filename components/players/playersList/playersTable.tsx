@@ -30,8 +30,8 @@ import { Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
 
 const GET_PLAYERS = gql`
-  query GetPlayers($page: Int!, $limit: Int!) {
-    getPlayers(page: $page, limit: $limit) {
+  query GetPlayers($team_id: String ,$page: Int!, $limit: Int!) {
+    getPlayers(team_id: $team_id ,page: $page, limit: $limit) {
       id
       name
       age
@@ -330,12 +330,19 @@ type Player = (typeof playersTmp)[0];
 export default function PlayersTable() {
 
   const [players, setPlayers] = useState(playersTmp);
-  const { loading, error, data } = useQuery(GET_PLAYERS);
+  const { loading, error, data } = useQuery(GET_PLAYERS, {
+    variables: {
+      team_id: "",
+      page: 1,
+      limit: 0,
+    },
+  });
   const [deletePlayer] = useMutation(DELETE_PLAYER);
 
   if (data) {
-    setPlayers(data.getPlayers);
-   }
+    console.log(data);
+    setPlayers(data)
+  }
 
   const handleDelete = async (id: string) => {
     try {
