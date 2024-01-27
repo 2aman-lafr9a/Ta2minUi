@@ -1,14 +1,6 @@
  
 
- const columns = [
-  { name: "NAME", uid: "name" , sortable: true},
-  { name: "AGE", uid: "age" , sortable: true},
-  { name: "OVERALL", uid: "overall" , sortable: true},
-  { name: "POTENTIAL", uid: "potential", sortable: true },
-  { name: "POSITION", uid: "position", sortable: true },
-  { name: "FLAG", uid: "flag" , sortable: true},
-  { name: "ACTIONS", uid: "actions" , sortable: false },
-];
+ 
   const statusOptions = [
     {name: "Active", uid: "active"},
     {name: "Paused", uid: "paused"},

@@ -13,17 +13,39 @@ import toast from "react-hot-toast";
 import { DeleteIcon } from "@/components/icons/table/delete-icon";
 import Rating from "@/components/rating";
 
-interface OfferCardForTMProps {
-  offer: {
+//  id: "10",
+// name: "Book Lover's Paradise",
+// agency: {
+//   id: "10",
+//   name: "BookNook",
+//   logoUrl: "https://example.com/booknook_logo.png",
+//   website: "https://booknook.com",
+//   sourceCodeUrl: "https://github.com/booknook",
+// },
+// description: "Dive into a world of literature with our curated collection of must-read books!",
+// price: 90,
+// date: "2024-03-25",
+// rating: 4.9,
+// offerType: "Book Sale",
+
+// Define the Offer type
+export interface Offer {
+  id: string;
+  name: string;
+  agency: {
     id: string;
-    agency: {
-      name: string;
-    };
     name: string;
-    description: string;
-    price: number;
-    // Add more properties as needed
+    adress: string;
   };
+  description: string;
+  price: number;
+  date: string;
+  rating: number;
+  offerType: string;
+}
+interface OfferCardForTMProps {
+  offer: Offer;
+  className?: string;
 }
 
 const DELETE_OFFER = gql`
@@ -34,7 +56,10 @@ const DELETE_OFFER = gql`
   }
 `;
 
-const OfferCardForTM: React.FC<OfferCardForTMProps> = ({ offer }) => {
+const OfferCardForTM: React.FC<OfferCardForTMProps> = ({
+  offer,
+  className,
+}) => {
   const [deleteOffer] = useMutation(DELETE_OFFER);
   const [rating, setRating] = useState<number>(0);
 
@@ -51,7 +76,7 @@ const OfferCardForTM: React.FC<OfferCardForTMProps> = ({ offer }) => {
 
   return (
     <div>
-      <Card className="max-w-[400px]">
+      <Card className={`max-w-[400px] ${className}`}>
         <CardHeader className="flex gap-3">
           <div className="flex flex-col">
             <p className="text-md">{offer.agency.name}</p>
@@ -73,7 +98,12 @@ const OfferCardForTM: React.FC<OfferCardForTMProps> = ({ offer }) => {
         <Divider />
         <CardFooter className="flex justify-center">
           <div className="flex justify-center items-center gap-4">
-            <Rating content="Offer Rating" />
+            <Rating
+              content="Offer Rating"
+              initialRating={offer.rating}
+              onChange={(rating) => console.log(`Selected rating: ${rating}`)}
+              offerName={offer.name}
+            />
           </div>
         </CardFooter>
       </Card>

@@ -24,14 +24,15 @@ import PlusIcon from "@/components/icons/tailwindCss//PlusIcon";
 import VerticalDotsIcon from "@/components/icons/tailwindCss/VerticalDotsIcon";
 import ChevronDownIcon from "@/components/icons/tailwindCss/ChevronDownIcon";
 import SearchIcon from "@/components/icons/tailwindCss/SearchIcon";
-import {columns, players, statusOptions} from "./data";
+import { players, statusOptions } from "./data";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
+import Rating from "@/components/rating";
 
 const GET_PLAYERS = gql`
-  query GetPlayers($team_id: String ,$page: Int!, $limit: Int!) {
-    getPlayers(team_id: $team_id ,page: $page, limit: $limit) {
+  query GetPlayers($team_id: String, $page: Int!, $limit: Int!) {
+    getPlayers(team_id: $team_id, page: $page, limit: $limit) {
       id
       name
       age
@@ -62,14 +63,25 @@ const DELETE_PLAYER = gql`
     }
   }
 `;
-
+const columns = [
+  { name: "NAME", uid: "name", sortable: true },
+  { name: "AGE", uid: "age", sortable: true },
+  { name: "OVERALL", uid: "overall", sortable: true },
+  { name: "POTENTIAL", uid: "potential", sortable: true },
+  { name: "POSITION", uid: "position", sortable: true },
+  { name: "FLAG", uid: "flag", sortable: true },
+  { name: "ACTIONS", uid: "actions", sortable: false },
+  { name: "OFFER", uid: "offer", sortable: false },
+];
 const INITIAL_VISIBLE_COLUMNS = [
   "name",
   "position",
   "flag",
   "overall",
   "actions",
+  "offer",
 ];
+
 const playersTmp = [
   {
     id: "1",
@@ -91,6 +103,21 @@ const playersTmp = [
     weak_foot: "4",
     height: 170,
     weight: 72,
+    offer: {
+      id: "1",
+      name: "Special Offer",
+      agency: {
+        id: "1",
+        name: "Awesome Agency",
+        address: "2651365651237413248",
+      },
+      description:
+        "Amazing offer for you! Amazing offer for you! Amazing offer for you! Amazing offer for you!",
+      price: 100,
+      date: "2024-01-24",
+      rating: 5,
+      offerType: "Discount",
+    },
   },
   {
     id: "2",
@@ -112,6 +139,21 @@ const playersTmp = [
     weak_foot: "4",
     height: 187,
     weight: 83,
+    offer: {
+      id: "1",
+      name: "Special Offer",
+      agency: {
+        id: "1",
+        name: "Awesome Agency",
+        address: "2651365651237413248",
+      },
+      description:
+        "Amazing offer for you! Amazing offer for you! Amazing offer for you! Amazing offer for you!",
+      price: 100,
+      date: "2024-01-24",
+      rating: 5,
+      offerType: "Discount",
+    },
   },
   {
     id: "3",
@@ -133,6 +175,7 @@ const playersTmp = [
     weak_foot: "5",
     height: 175,
     weight: 68,
+    offer: null,
   },
   {
     id: "4",
@@ -154,6 +197,20 @@ const playersTmp = [
     weak_foot: "5",
     height: 181,
     weight: 68,
+    offer: {
+      id: "4",
+      name: "Wellness Package",
+      agency: {
+        id: "4",
+        name: "HealthHub",
+        address: "2651365651237413248",
+      },
+      description: "Invest in your health with our exclusive wellness package!",
+      price: 150,
+      date: "2024-02-20",
+      rating: 4.7,
+      offerType: "Healthcare Discount",
+    },
   },
   {
     id: "5",
@@ -175,6 +232,7 @@ const playersTmp = [
     weak_foot: "4",
     height: 184,
     weight: 80,
+    offer: null,
   },
   {
     id: "6",
@@ -196,6 +254,7 @@ const playersTmp = [
     weak_foot: "3",
     height: 193,
     weight: 92,
+    offer: null,
   },
   {
     id: "7",
@@ -217,6 +276,20 @@ const playersTmp = [
     weak_foot: "3",
     height: 175,
     weight: 71,
+    offer: {
+      id: "4",
+      name: "Wellness Package",
+      agency: {
+        id: "4",
+        name: "HealthHub",
+        address: "2651365651237413248",
+      },
+      description: "Invest in your health with our exclusive wellness package!",
+      price: 150,
+      date: "2024-02-20",
+      rating: 4.7,
+      offerType: "Healthcare Discount",
+    },
   },
   {
     id: "8",
@@ -238,6 +311,20 @@ const playersTmp = [
     weak_foot: "4",
     height: 178,
     weight: 73,
+    offer: {
+      id: "4",
+      name: "Wellness Package",
+      agency: {
+        id: "4",
+        name: "HealthHub",
+        address: "2651365651237413248",
+      },
+      description: "Invest in your health with our exclusive wellness package!",
+      price: 150,
+      date: "2024-02-20",
+      rating: 4.7,
+      offerType: "Healthcare Discount",
+    },
   },
   {
     id: "9",
@@ -259,6 +346,7 @@ const playersTmp = [
     weak_foot: "4",
     height: 179,
     weight: 69,
+    offer: null,
   },
   {
     id: "10",
@@ -280,6 +368,7 @@ const playersTmp = [
     weak_foot: "3",
     height: 184,
     weight: 82,
+    offer: null,
   },
   {
     id: "11",
@@ -301,6 +390,7 @@ const playersTmp = [
     weak_foot: "3",
     height: 183,
     weight: 72,
+    offer: null,
   },
   {
     id: "12",
@@ -322,13 +412,13 @@ const playersTmp = [
     weak_foot: "4",
     height: 194,
     weight: 87,
+    offer: null,
   },
   // Add more players as needed
 ];
 type Player = (typeof playersTmp)[0];
 
 export default function PlayersTable() {
-
   const [players, setPlayers] = useState(playersTmp);
   const { loading, error, data } = useQuery(GET_PLAYERS, {
     variables: {
@@ -341,20 +431,23 @@ export default function PlayersTable() {
 
   if (data) {
     console.log(data);
-    setPlayers(data)
+    setPlayers(data);
   }
 
-  const handleDelete = useCallback(async (id: string) => {
-    try {
-      await deletePlayer({ variables: { id } });
-      toast.success(`Player ${id} deleted successfully`);
-      ///slice the array to remove the deleted player
-      const newPlayers = players.filter((player) => player.id !== id);
-      setPlayers(newPlayers);
-    } catch (e) {
-      toast.error(`An error occurred while deleting player ${id}`);
-    }
-  }, [deletePlayer, players, setPlayers]);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await deletePlayer({ variables: { id } });
+        toast.success(`Player ${id} deleted successfully`);
+        ///slice the array to remove the deleted player
+        const newPlayers = players.filter((player) => player.id !== id);
+        setPlayers(newPlayers);
+      } catch (e) {
+        toast.error(`An error occurred while deleting player ${id}`);
+      }
+    },
+    [deletePlayer, players, setPlayers]
+  );
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -431,7 +524,7 @@ export default function PlayersTable() {
               avatarProps={{
                 src: player.photo,
               }}
-              name={cellValue}
+              name={player.name}
             >
               {player.nationality}
             </User>
@@ -449,6 +542,40 @@ export default function PlayersTable() {
           );
         case "overall":
           return cellValue;
+
+        case "offer":
+          return (
+            <div className="flex flex-col items-center gap-2">
+              {player.offer ? (
+                <>
+                  <div>
+                    <span>{player.offer.name ? player.offer.name : ""}</span>
+                  </div>
+                  <div>
+                    <Rating
+                      content="Offer Rating"
+                      size={15}
+                      initialRating={
+                        player.offer.rating ? player.offer.rating : 1
+                      }
+                      isDisplay={true}
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <Tooltip content="Assign Contract" color="secondary">
+                    <button
+                      onClick={() => console.log("Assign Contract", player.id)}
+                    >
+                      <EditIcon size={20} fill="#979797" />
+                    </button>
+                  </Tooltip>
+                </div>
+              )}
+            </div>
+          );
+
         case "actions":
           return (
             <div className="flex items-center gap-4 ">
@@ -553,7 +680,13 @@ export default function PlayersTable() {
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, players.length, onRowsPerPageChange, onClear]);
+  }, [
+    filterValue,
+    onSearchChange,
+    players.length,
+    onRowsPerPageChange,
+    onClear,
+  ]);
 
   const bottomContent = React.useMemo(() => {
     return (

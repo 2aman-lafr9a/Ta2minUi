@@ -1,62 +1,56 @@
-  import React, { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Tooltip,
-} from "@nextui-org/react";
-import StarIcon from "@/components/icons/tailwindCss/starIcon"; // Assuming you have a StarIcon component
-import { gql, useMutation } from "@apollo/client";
-import toast from "react-hot-toast";
-import { DeleteIcon } from "@/components/icons/table/delete-icon";
+import React from "react";
+import { Tooltip } from "@nextui-org/react";
+import ReactStars from "react-rating-star-with-type";
 
 interface RatingProps {
   content: string;
+  size?: number;
+  initialRating: number;
+  onChange?: (rating: number) => void;
+  offerName?: string;
+  isDisplay?: boolean;
+  isInput?: boolean;
 }
 
-const Rating: React.FC<RatingProps> = ({ content }) => {
-  return (
-    <div className="flex justify-center items-center gap-4">
-          
-             <div>
-              <Tooltip content={content}>
-                <div className="rating">
-                  <input
+const Rating: React.FC<RatingProps> = ({
+  content,
+  initialRating,
+  onChange,
+  offerName,
+  isDisplay,
+  isInput,
+  size ,
+}) => {
+  const roundToHalfStar = (rating: number) => {
+    const roundedRating = Math.floor(rating);
+    return roundedRating;
+  };
 
-                    type="radio"
-                    name="rating-2"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-2"
-                    className="mask mask-star-2 bg-orange-400"
-                    
-                  />
-                  <input
-                    type="radio"
-                    name="rating-2"
-                    className="mask mask-star-2 bg-orange-400"
-                    checked
-                  />
-                  <input
-                    type="radio"
-                    name="rating-2"
-                    className="mask mask-star-2 bg-orange-400"
-                    checked
-                  />
-                  <input
-                    type="radio"
-                    name="rating-2"
-                    className="mask mask-star-2 bg-orange-400"
-                  />
-                </div>
-              </Tooltip>
-            </div>
-                         
-     </div>
+  const handleClick = (index: number) => {
+    if (onChange && !isInput) {
+      console.log(`Selected rating ${index } for offer ${offerName}`);
+      onChange(index );
+      console.log(`Selected rating ${index } for offer ${offerName}`);
+    }
+  };
+
+  return (
+    <div className=" ">
+      <Tooltip content={initialRating}>
+        <div className="stars">
+          <div>
+            <ReactStars
+              value={ (initialRating)}
+              isEdit={isInput}
+              activeColors={["red", "#8568FC", "#9177FF", "#FFCE00", "orange"]}
+              valueShow={true}
+              size={size ? size : 23}
+              onChange={(value) => handleClick(value)}
+            />
+          </div>
+        </div>
+      </Tooltip>
+    </div>
   );
 };
 
