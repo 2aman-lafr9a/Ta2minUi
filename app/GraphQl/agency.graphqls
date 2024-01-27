@@ -3,13 +3,13 @@ type Agency {
     name: String!
     description: String!
     plan: String!
-    Offers: [Offer]
-    Wallet: String!
+    offers: [Offer]
+    wallet: String!
 }
 
 input AgencyInput {
     name: String!
     description: String!
     plan: String!
-    Wallet: String!
+    wallet: String!
 }
