@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  facejob_client:
+  aman_client:
     container_name: aman_client
     build:
       context: .

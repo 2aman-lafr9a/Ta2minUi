@@ -1,16 +1,16 @@
 type Mutation{
     #    agencies
-    createAgency(name: String!, description: String!, plan: String!): Agency!
-    updateAgency(id: ID!, name: String, plan: String, description: String): Agency!
+    createAgency(name: String!, description: String!, plan: String!, wallet: String!): Agency!
+    updateAgency(id: ID!, name: String, plan: String, description: String, wallet: String): Agency!
     deleteAgency(id: ID!): Agency!
     #    offers
     createOffer(name: String!, agencyId: String!, description: String!, price: Int!, date: String!, offerType: OfferType): Offer!
     updateOffer(id: ID!, name: String, agency: AgencyInput, description: String, price: Int, date: String, rating: Int, offerType: OfferType): Offer!
     deleteOffer(id: ID!): Offer!
     #    teams
-    createTeam(name: String!, description: String!, owner: String!, teamLogo: String!, players: [ID]): Team!
+    createTeam(name: String!, description: String!, owner: String!, teamLogo: String!, players: [ID]): ID!
     updateTeam(id: ID!, name: String, description: String, owner: String, teamLogo: String, players: [ID]): Team!
-    deleteTeam(id: ID!): Team!
+    deleteTeam(id: ID!): ID!
     #    players
     createPlayer(playerInput: PlayerInput!): Player!
     updatePlayer(playerInput: PlayerInput): Player!
