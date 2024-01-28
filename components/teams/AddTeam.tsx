@@ -92,7 +92,6 @@ export const AddTeam = () => {
       <>
         <p
           onClick={onOpen}
-          className="bg-foreground text-background"
           style={{
             cursor: "pointer",
             padding: "2px",

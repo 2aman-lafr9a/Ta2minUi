@@ -15,6 +15,17 @@ import { FilterIcon } from "../icons/sidebar/filter-icon";
 import { useSidebarContext } from "../layout/layout-context";
 import { ChangeLogIcon } from "../icons/sidebar/changelog-icon";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { Button } from "@nextui-org/react";
+import { AddPlayer } from "@/components/players/add-player";
+
+import { AddTeam } from "../teams/AddTeam";
+import { AddOffer } from "../offers/addOffer";
+import { PlusIcon } from "../icons/sidebar/plus-icon";
+import { PlayersIcon } from "../icons/sidebar/players-icon";
+import { ContractIcon } from "../icons/sidebar/contract-icon";
+import { LogoutIcon } from "../icons/sidebar/logout-icon";
+import { StarIcon } from "../icons/sidebar/star-icon";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
@@ -27,85 +38,169 @@ export const SidebarWrapper = () => {
     );
   };
   return (
-
-  
     <aside className="h-screen z-[202] sticky top-0">
-
-
-            {collapsed ? (
-              <div className={Sidebar.Overlay()} onClick={setCollapsed} />
-            ) : null}
-      
+      {collapsed ? (
+        <div className={Sidebar.Overlay()} onClick={setCollapsed} />
+      ) : null}
 
       {isAuthRoute() ? null : (
-        
-      <div
-        className={Sidebar({
-          collapsed: collapsed,
-        })}
-      >
-        <div className={Sidebar.Header()}>
-      
-        </div>
-        <div className="flex flex-col justify-between h-full">
-          <div className={Sidebar.Body()}>
-            <SidebarItem
-              title="Home"
-              icon={<HomeIcon />}
-              isActive={pathname === "/"}
-              href="/"
-            />
-            <SidebarMenu title="Main Menu">
-              <SidebarItem
-                isActive={pathname === "/players"}
-                title="Players"
-                icon={<AccountsIcon />}
-                href="players"
-              />
-             <SidebarItem
-                isActive={pathname === "/offers"}
-                title="Offers"
-                icon={<PaymentsIcon />}
-                href="offers"
-              />
-              <CollapseItems
-                icon={<BalanceIcon />}
-                items={["Signin", "TM Signup", "AG Signup"]}
-                hrefs={["/auth/signin", "/auth/signup/teammanager", "/auth/signup/agency"]}
-                title="Authentications"
-              />
-              
-            </SidebarMenu>
+        <div
+          className={Sidebar({
+            collapsed: collapsed,
+          })}
+        >
+          <div className={Sidebar.Header()}></div>
+          <div className="flex flex-col justify-between h-full">
+            <div className={Sidebar.Body()}>
+              <motion.div
+                style={{
+                  cursor: "pointer",
+                }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.8 }}
+              >
+                <SidebarItem
+                  title="Home"
+                  icon={<HomeIcon />}
+                  isActive={pathname === "/"}
+                  href="/"
+                />
+              </motion.div>
 
-          
-          
+              <SidebarMenu title="Main Menu">
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
+                    isActive={pathname === "/players"}
+                    title="Players"
+                    icon={<PlayersIcon />}
+                    href="players"
+                  />
+                </motion.div>
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
+                    isActive={pathname === "/offers"}
+                    title="Offers"
+                    icon={<PaymentsIcon />}
+                    href="offers"
+                  />
+                </motion.div>
+
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
+                    isActive={pathname === "/contracts"}
+                    title="contracts"
+                    icon={<ContractIcon />}
+                    href="contracts"
+                  />
+                </motion.div>
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
+                    isActive={pathname === "/offers-rating"}
+                    title="Rate Offers"
+                    icon={<StarIcon />}
+                    href="offers-rating"
+                  />
+                </motion.div>
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
+                    isActive={pathname === "/rr"}
+                    title=""
+                    icon={<PlusIcon />}
+                    href=""
+                    isButton={true}
+                  >
+                    <AddPlayer />
+                  </SidebarItem>
+                </motion.div>
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
+                    isActive={pathname === "/rr"}
+                    title=""
+                    icon={<PlusIcon />}
+                    href=""
+                    isButton={true}
+                  >
+                    <AddOffer />
+                  </SidebarItem>
+                </motion.div>
+
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <CollapseItems
+                    icon={<BalanceIcon />}
+                    items={["Signin", "TM Signup", "AG Signup"]}
+                    hrefs={[
+                      "/auth/signin",
+                      "/auth/signup/teammanager",
+                      "/auth/signup/agency",
+                    ]}
+                    title="Authentications"
+                  />
+                </motion.div>
+              </SidebarMenu>
+            </div>
+            <div className={Sidebar.Footer()}>
+              <Tooltip content={"LOGOUT"} color="danger">
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.6 }}
+                  whileTap={{ scale: 0.5 }}
+                >
+                  {/* Logout text in span with colore red and bold font  */}
+                  <span className="text-red-500 font-bold">
+                    <div className="flex justify-between">
+                    <LogoutIcon />  &nbsp;   LOGOUT
+                    </div>
+                  </span>
+                </motion.div>
+              </Tooltip>
+            </div>
           </div>
-          {/* <div className={Sidebar.Footer()}>
-            <Tooltip content={"Settings"} color="primary">
-              <div className="max-w-fit">
-                <SettingsIcon />
-              </div>
-            </Tooltip>
-            <Tooltip content={"Adjustments"} color="primary">
-              <div className="max-w-fit">
-                <FilterIcon />
-              </div>
-            </Tooltip>
-            <Tooltip content={"Profile"} color="primary">
-              <Avatar
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                size="sm"
-              />
-            </Tooltip>
-          </div> */}
         </div>
-      </div>
-      )
-      }
-
-      
-
-
+      )}
     </aside>
   );
 };

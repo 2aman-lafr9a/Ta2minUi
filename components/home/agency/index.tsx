@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Home: React.FC = () => {
+const HomeAgency: React.FC = () => {
     return (
         <div>
             {/* Add your home page component code here */}
@@ -8,4 +8,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default HomeAgency;

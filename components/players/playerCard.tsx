@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, Divider, User } from "@nextui-org/react";
+import Image from 'next/image'
 
 interface PlayerCardProps {
   player: {
@@ -36,8 +37,6 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }) => {
             size="lg"
             style={{ width: "128px", height: "128px", marginBottom: "1rem" }}
           />
-
-          
         </div>
         <div className="w-2/3 px-6 py-4">
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
@@ -54,21 +53,16 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }) => {
             <span className="text-gray-600 dark:text-gray-400 mr-2">
               Nationality:
             </span>
-            {/* <User
-            className="h-5 w-8"
-              avatarProps={{
-                src: player.flag,
-              }}
-              name={player.nationality}
-            >
-              {player.nationality}
-            </User> */}
-            <img
-              className="h-5 w-8"
+            <Image
               src={player.flag}
               alt={`${player.nationality} flag`}
+              width={40} // Set the desired width
+              height={25} // Set the desired height
             />
+             <span> {`.  ${player.nationality} flag`} </span>
+            
           </div>
+
           <Divider className="my-4" />
           <div className="grid grid-cols-2 gap-4">
             {/* ... (remaining code remains the same) */}
