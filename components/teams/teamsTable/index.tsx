@@ -51,10 +51,6 @@ export default function TableTail({ parentFn }: { parentFn: (user: User) => void
     // Check if selectedUser is not undefined and if selectedKeys has changed
     if (selectedUser && !isEqual(selectedKeys, prevSelectedKeys.current)) {
      parentFn(selectedUser); 
-     console.log("selectedUser :");
-      console.log(selectedUser);
-      console.log("prevSelectedUser :");
-      console.log(prevSelectedKeys.current);
     }
   
     // Update the ref with the current value of selectedKeys

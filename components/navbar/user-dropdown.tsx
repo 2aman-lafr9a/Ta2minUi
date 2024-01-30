@@ -34,12 +34,6 @@ export const UserDropdown = () => {
           <p>Signed in as</p>
           <p>zoey@example.com</p>
         </DropdownItem>
-        <DropdownItem key="settings">My Settings</DropdownItem>
-        <DropdownItem key="team_settings">Team Settings</DropdownItem>
-        <DropdownItem key="analytics">Analytics</DropdownItem>
-        <DropdownItem key="system">System</DropdownItem>
-        <DropdownItem key="configurations">Configurations</DropdownItem>
-        <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
         <DropdownItem key="logout" color="danger" className="text-danger ">
           Log Out
         </DropdownItem>

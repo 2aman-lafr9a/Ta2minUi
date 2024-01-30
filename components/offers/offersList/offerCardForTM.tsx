@@ -46,6 +46,7 @@ export interface Offer {
 interface OfferCardForTMProps {
   offer: Offer;
   className?: string;
+  isInput?: boolean;
 }
 
 const DELETE_OFFER = gql`
@@ -56,13 +57,15 @@ const DELETE_OFFER = gql`
   }
 `;
 
+
 const OfferCardForTM: React.FC<OfferCardForTMProps> = ({
   offer,
   className,
+  isInput,
 }) => {
   const [deleteOffer] = useMutation(DELETE_OFFER);
   const [rating, setRating] = useState<number>(0);
-
+ 
   const handleDelete = async (id: string) => {
     try {
       await deleteOffer({
@@ -90,7 +93,7 @@ const OfferCardForTM: React.FC<OfferCardForTMProps> = ({
               {offer.description}
             </p>
             <p className="text-lg font-bold text-orange-500 dark:text-orange-300">
-              Price: ${offer.price}
+              Price: {offer.price} ETH
             </p>
             {/* Add more details as needed */}
           </div>
@@ -100,9 +103,10 @@ const OfferCardForTM: React.FC<OfferCardForTMProps> = ({
           <div className="flex justify-center items-center gap-4">
             <Rating
               content="Offer Rating"
-              initialRating={offer.rating}
+              initialRating={isInput ? 0 : offer.rating}
               onChange={(rating) => console.log(`Selected rating: ${rating}`)}
               offerName={offer.name}
+              isInput={isInput}
             />
           </div>
         </CardFooter>

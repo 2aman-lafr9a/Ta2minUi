@@ -64,17 +64,7 @@ export const AddTeam = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     // Log the submitted data to the console
     console.log("Added Team:", data);
-    /// open the file '../tabletail/data.ts' and add the data to the 'teams' array as a json object
-    //
-    // users.push({
-    //   id: users.length + 1,
-    //   name: data.name,
-    //   country: data.country,
-    //   age: data.age,
-    //   avatar: data.avatar,
-    //   email: data.email,
-    //   owner: data.owner,
-    // });
+     
 
     const teamDescription = `Country: ${data.country}, Status: ${data.status}, Age: ${data.age}, Email: ${data.email}`;
       

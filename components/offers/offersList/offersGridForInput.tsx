@@ -1,7 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { Spinner } from "@nextui-org/react";
 import  OfferCardForTM  from "./offerCardForTM";
-import OfferCard from "./offerCard";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 const GET_OFFERS = gql`
@@ -176,7 +175,7 @@ const sampleOffers = [
   // ... R
   // ... Repeat the structure for the remaining offers
 ];
-export default function OfferGrid() {
+export default function OffersGridForInput() {
   const [offers, setOffers] = useState(sampleOffers);
   const { loading, error, data } = useQuery(GET_OFFERS);
 
@@ -205,7 +204,7 @@ export default function OfferGrid() {
   return (
     <div className="gap-5 grid grid-cols-2 sm:grid-cols-3">
       {offers.map((offer) => (
-        <OfferCard key={offer.id} offer={offer} />
+        <OfferCardForTM key={offer.id} offer={offer} isInput={true} />
       ))}
     </div>
   );

@@ -6,5 +6,6 @@ export interface Agency {
     passwordConfirmation : string;
     companyDescription : string;
     subscription : number;
+    wallet : string;
   }
   

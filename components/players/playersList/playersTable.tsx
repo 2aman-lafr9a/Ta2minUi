@@ -29,6 +29,7 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import { Spinner } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import Rating from "@/components/rating";
+import { useRouter } from "next/navigation";
 
 const GET_PLAYERS = gql`
   query GetPlayers($team_id: String, $page: Int!, $limit: Int!) {
@@ -419,6 +420,8 @@ const playersTmp = [
 type Player = (typeof playersTmp)[0];
 
 export default function PlayersTable() {
+
+  const Router = useRouter();
   const [players, setPlayers] = useState(playersTmp);
   const { loading, error, data } = useQuery(GET_PLAYERS, {
     variables: {
@@ -566,7 +569,7 @@ export default function PlayersTable() {
                 <div className="flex items-center gap-4">
                   <Tooltip content="Assign Contract" color="secondary">
                     <button
-                      onClick={() => console.log("Assign Contract", player.id)}
+                      onClick={() => Router.push('/recomendation')}
                     >
                       <EditIcon size={20} fill="#979797" />
                     </button>

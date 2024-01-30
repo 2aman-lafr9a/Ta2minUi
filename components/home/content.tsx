@@ -9,6 +9,8 @@ import { CardTransactions } from "./card-transactions";
 import { Link } from "@nextui-org/react";
 import NextLink from "next/link";
 import PlayersTable from "../players/playersList/playersTable";
+import { motion } from "framer-motion";
+
 const Chart = dynamic(
   () => import("../charts/steam").then((mod) => mod.Steam),
   {
@@ -24,9 +26,68 @@ export const Content = () => (
         <div className="flex flex-col gap-2">
           <h3 className="text-xl font-semibold">Available Balance</h3>
           <div className="grid md:grid-cols-3 grid-cols-1 2xl:grid-cols-3 gap-5 justify-center w-full">
-            <CardBalance1 />
+            <motion.div
+              whileHover={{
+                scale: [1, 1.1, 1, 1.1, 1],
+                rotate: [0, -5, 5, -5, 5, 0],
+              }}
+              drag
+              dragConstraints={{
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              }}
+              dragElastic={1}
+              animate={{
+                rotate: [0, -5, 5, -5, 5, 0],
+                scale: [1, 1.1, 1, 1.1, 1],
+              }}
+              transition={{ duration: 0.6 }}
+            >
+              <CardBalance1 />
+            </motion.div>
+            <motion.div
+              whileHover={{
+                scale: [1, 1.1, 1, 1.1, 1],
+                rotate: [0, -5, 5, -5, 5, 0],
+              }}
+              drag
+              dragConstraints={{
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              }}
+              dragElastic={1}
+              animate={{
+                rotate: [0, -5, 5, -5, 5, 0],
+                scale: [1, 1.1, 1, 1.1, 1],
+              }}
+              transition={{ duration: 0.6 }}
+            >
             <CardBalance2 />
+            </motion.div>  <motion.div
+              whileHover={{
+                scale: [1, 1.1, 1, 1.1, 1],
+                rotate: [0, -5, 5, -5, 5, 0],
+              }}
+              drag
+              dragConstraints={{
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              }}
+              dragElastic={1}
+              animate={{
+                rotate: [0, -5, 5, -5, 5, 0],
+                scale: [1, 1.1, 1, 1.1, 1],
+              }}
+              transition={{ duration: 0.6 }}
+            >
             <CardBalance3 />
+            </motion.div>
           </div>
         </div>
 

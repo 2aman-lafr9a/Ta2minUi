@@ -54,7 +54,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
         <CardBody>
           <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-md shadow-md mb-4">
             <p className="text-base text-gray-700 dark:text-gray-300 mb-2">{offer.description}</p>
-            <p className="text-lg font-bold text-orange-500 dark:text-orange-300">Price: ${offer.price}</p>
+            <p className="text-lg font-bold text-orange-500 dark:text-orange-300">Price: {offer.price} ETH</p>
             {/* Add more details as needed */}
           </div>
         </CardBody>

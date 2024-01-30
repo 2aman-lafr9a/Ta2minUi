@@ -17,7 +17,8 @@ export const NavbarWrapper = ({ children }: Props) => {
     return (
       pathname === "/auth/signin" ||
       pathname === "/auth/signup/teammanager" ||
-      pathname === "/auth/signup/agency"
+      pathname === "/auth/signup/agency" ||
+      pathname === "/auth"
     );
   };
 

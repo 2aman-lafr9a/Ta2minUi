@@ -8,7 +8,8 @@ import React, { FormEvent, useState } from "react";
 import { Agency } from "@/models/agency";
 import { gql, useMutation } from "@apollo/client";
 import Web3 from "web3";
-
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const CREATE_AGENCY = gql`
   mutation createAgency($name: String!, $description: String!, $plan: String!) {
@@ -17,6 +18,7 @@ const CREATE_AGENCY = gql`
       name
       description
       plan
+      walet
     }
   }
 `;
@@ -166,7 +168,10 @@ const SignupAgencyForm = () => {
   //     // Define the contract instance
   let contract: any;
   let prix: Number;
+  const router = useRouter();
   // execute the script web3 '
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // // Define a function to connect MetaMask
   const connectMetamask = async () => {
@@ -190,20 +195,23 @@ const SignupAgencyForm = () => {
     try {
       if (account) {
         (window as any).web3 = new Web3((window as any).ethereum);
-        contract = new (window as any).web3.eth.Contract(contractABI, contractAddress);
+        contract = new (window as any).web3.eth.Contract(
+          contractABI,
+          contractAddress
+        );
         console.log("Connected to contract at address: " + contractAddress);
       } else {
         console.log("Please connect to MetaMask first");
       }
     } catch (error) {
       console.error(error);
-      console.log("An error occurred while connecting to the contract");
     }
   };
 
   // // Define a function to accept rights
   const acceptRights = async (subscribtion_type: Number, name: string) => {
     try {
+      setLoading(true); // Set loading to true when starting the function
       if (account && contract) {
         switch (subscribtion_type) {
           case 1:
@@ -227,7 +235,9 @@ const SignupAgencyForm = () => {
       } else {
       }
     } catch (error) {
-      console.error(error);
+      toast.error((error as any).message);
+    } finally {
+      setLoading(false); // Set loading to false when the function completes (success or error)
     }
   };
 
@@ -239,6 +249,7 @@ const SignupAgencyForm = () => {
     passwordConfirmation: "",
     companyDescription: "",
     subscription: 0,
+    wallet: "",
   });
 
   const createAgencyHandler = async (e: FormEvent) => {
@@ -249,6 +260,7 @@ const SignupAgencyForm = () => {
         name: agency.companyName,
         description: agency.companyDescription,
         plan: agency.subscription,
+        walet: account,
       },
     });
     await createAgency();
@@ -265,6 +277,27 @@ const SignupAgencyForm = () => {
 
   const toStep2 = (e: FormEvent) => {
     e.preventDefault();
+
+    /// validations here
+    if (
+      agency.password !== agency.passwordConfirmation ||
+      agency.password === "" ||
+      agency.passwordConfirmation === ""
+    ) {
+      setError("Passwords do not match");
+      agency.password = "";
+      agency.passwordConfirmation = "";
+
+      return;
+    }
+    if (agency.password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+    if (agency.userName.length < 5) {
+      setError("Username must be at least 5 characters long");
+      return;
+    }
     setStep(2); // Move to the next step
   };
 
@@ -278,14 +311,18 @@ const SignupAgencyForm = () => {
       await connectMetamask();
       await connectContract();
       await acceptRights(agency.subscription, agency.companyName); // Assuming acceptRights is an asynchronous function
-      console.log("agency.subscription :");
-      console.log(agency.subscription);
-      // createAgencyHandler;
+      createAgencyHandler;
+
     } catch (error) {
       console.error(error);
-      console.log("An error occurred during the process");
+      return;
     }
 
+    // set item in local storage
+
+
+    toast.success("Account created successfully");
+    router.push("/auth/signin");
     //  window.location.href = "/auth/signin"
   };
 
@@ -298,10 +335,16 @@ const SignupAgencyForm = () => {
         fontSize: "30px",
       }}
     >
-      <div className="login-box ">
+      <div
+        className="login-box "
+        style={{
+          backgroundColor: loading ? "transparent" : "rgba(0,0,0,.5)",
+        }}
+      >
         {step === 1 && (
           <>
             <h2>SignUp</h2>
+
             <form onSubmit={toStep2}>
               {/* <div className="user-box">
   <input
@@ -376,6 +419,19 @@ const SignupAgencyForm = () => {
                 />
                 <label htmlFor="companyDescription"> Company Description</label>
               </div>
+              {error && (
+                <div
+                  style={{
+                    color: "red",
+
+                    fontSize: "22px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {error}
+                </div>
+              )}
               <div className="buttun">
                 <button type="submit">
                   <span />
@@ -389,7 +445,7 @@ const SignupAgencyForm = () => {
           </>
         )}
 
-        {step === 2 && (
+        {step === 2 && !loading && (
           <div className="login-box login-box-2">
             <form className="agency2">
               <div className="agency2">
@@ -468,12 +524,26 @@ const SignupAgencyForm = () => {
           </div>
         )}
 
+        {loading && (
+          <div className="p-6 ">
+            <h2>Loading ... </h2>
+            <span
+              className="loading-text text-muted"
+              style={{
+                fontSize: "20px",
+              }}
+            >
+              This might take a moment or two.
+            </span>
+          </div>
+        )}
+
         {/* loader */}
         <div className="main-fader agency">
           <div className="loader">
             <svg viewBox="0 0 866 866" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="160%" y2="0%">
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="120%" y2="0%">
                   <stop offset="0%" style={{ stopColor: "transparent" }} />
                   <stop offset="100%" style={{ stopColor: "#03e9f4" }} />
                 </linearGradient>

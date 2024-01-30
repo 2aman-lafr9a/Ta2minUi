@@ -6,11 +6,9 @@ import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { TeamManager } from "@/models/teammanager";
 import { gql, useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
-import Web3 from 'web3';
- import { ethers } from 'ethers';
-
-
- 
+import Web3 from "web3";
+import { ethers } from "ethers";
+import { useRouter } from "next/navigation";
 const CREATE_TEAM_MANAGER = gql`
   mutation createTeamManager(
     $name: String!
@@ -32,213 +30,229 @@ const contractAddress = "0xE38b538a31097D9F81eA3cA2592547752c8D512F";
 
 const contractABI = [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "teamManager",
-        "type": "address"
-      }
+        indexed: false,
+        internalType: "address",
+        name: "teamManager",
+        type: "address",
+      },
     ],
-    "name": "RightsAccepted",
-    "type": "event"
+    name: "RightsAccepted",
+    type: "event",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_teamManager",
-        "type": "address"
+        internalType: "address",
+        name: "_teamManager",
+        type: "address",
       },
       {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
-      }
+        internalType: "string",
+        name: "_name",
+        type: "string",
+      },
     ],
-    "name": "acceptRights",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "acceptRights",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_teamManagerAddress",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "_teamManagerAddress",
+        type: "address",
+      },
     ],
-    "name": "getTeamManagerInfoByAddress",
-    "outputs": [
+    name: "getTeamManagerInfoByAddress",
+    outputs: [
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
+        internalType: "string",
+        name: "",
+        type: "string",
       },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
+    inputs: [],
+    name: "owner",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "teamManager",
-    "outputs": [
+    inputs: [],
+    name: "teamManager",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "teamManagerInfo",
-    "outputs": [
+    inputs: [],
+    name: "teamManagerInfo",
+    outputs: [
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
+        internalType: "string",
+        name: "name",
+        type: "string",
       },
       {
-        "internalType": "uint256",
-        "name": "creationTime",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "creationTime",
+        type: "uint256",
       },
       {
-        "internalType": "bool",
-        "name": "rightsAccepted",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "rightsAccepted",
+        type: "bool",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "name": "teamManagers",
-    "outputs": [
+    name: "teamManagers",
+    outputs: [
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
+        internalType: "string",
+        name: "name",
+        type: "string",
       },
       {
-        "internalType": "uint256",
-        "name": "creationTime",
-        "type": "uint256"
+        internalType: "uint256",
+        name: "creationTime",
+        type: "uint256",
       },
       {
-        "internalType": "bool",
-        "name": "rightsAccepted",
-        "type": "bool"
-      }
+        internalType: "bool",
+        name: "rightsAccepted",
+        type: "bool",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "terms",
-    "outputs": [
+    inputs: [],
+    name: "terms",
+    outputs: [
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
+    stateMutability: "view",
+    type: "function",
+  },
+];
 
 const TeamManagerSignup = () => {
   //     // Define a variable to store the account address
-      let account :any;
+  let account: any;
   //     // Define the contract instance
-      let contract:any;
-       // execute the script web3 '
-       
-    
-  // // Define a function to connect MetaMask
-      const connectMetamask = async () => {
-    try {
-        if ((window as any).ethereum) {
-            const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-            account = accounts[0];
-            console.log(account);
+  let contract: any;
+  // execute the script web3 '
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [errorB, setErrorB] = useState(false);
 
-        } else {
-          console.log("Please install Metamask or use a web3 browser");
-              }
-    } catch (error) {
-        console.error(error);
-        console.log("An error occurred while connecting Metamask");
-   }
+  const router = useRouter();
+
+  // // Define a function to connect MetaMask
+  const connectMetamask = async () => {
+    try {
+      if ((window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        account = accounts[0];
+        console.log(account);
+      } else {
+        console.log("Please install Metamask or use a web3 browser");
       }
+    } catch (error) {
+      console.error(error);
+      console.log("An error occurred while connecting Metamask");
+    }
+  };
   // // Define a function to connect the contract
   const connectContract = async () => {
     try {
-        if (account) {
-          (window as any).web3 = new Web3((window as any).ethereum);
-            contract = new (window as any).web3.eth.Contract(contractABI, contractAddress);
-             console.log("Connected to contract at address: " + contractAddress);
-        } else {
-             console.log("Please connect to MetaMask first");
-        }
+      if (account) {
+        (window as any).web3 = new Web3((window as any).ethereum);
+        contract = new (window as any).web3.eth.Contract(
+          contractABI,
+          contractAddress
+        );
+        console.log("Connected to contract at address: " + contractAddress);
+      } else {
+        console.log("Please connect to MetaMask first");
+      }
     } catch (error) {
-        console.error(error);
-        console.log("An error occurred while connecting to the contract");
+      console.error(error);
+      console.log("An error occurred while connecting to the contract");
     }
-  }
+  };
 
   // // Define a function to accept rights
-  const acceptRights = async ( name :string) => {
+  const acceptRights = async (name: string) => {
     try {
-        if (account && contract) {
-          console.log("Account: " + account);
-          console.log("Name 1: " + name);
-          await contract.methods.acceptRights(account,name).send({ from: account });             console.log("Rights accepted successfully");
-        } else {
-             console.log("Please connect to MetaMask and the contract first");
-        }
+      setLoading(true); // Set loading to true when starting the function
+      if (account && contract) {
+        console.log("Account: " + account);
+        console.log("Name 1: " + name);
+        await contract.methods
+          .acceptRights(account, name)
+          .send({ from: account });
+        console.log("Rights accepted successfully");
+        setErrorB(false);
+      } else {
+        console.log("Please connect to MetaMask and the contract first");
+      }
     } catch (error) {
-        console.error(error);
-  console.log("An error occurred while accepting rights");
+      setErrorB(true);
+      console.error(error);
+      console.log("An error occurred while accepting rights");
+    } finally {
+      setLoading(false); // Set loading to false when the function completes (success or error)
     }
-  }
+  };
 
   // declare the team manager variable and set to teamManeger interface
 
@@ -255,12 +269,10 @@ const TeamManagerSignup = () => {
         teamId: childData.id,
       });
     }
-    console.log("childData");
-    console.log(teamManager);
   }
 
   const tooltipText =
-    "User Wallet Address: By using our services, you agree to provide and store your cryptocurrency wallet address with DAMAN for transaction and service-related purposes.";
+    "User Wallet Address: By using our services,<br/>  you agree to provide and store your cryptocurrency wallet address with DAMAN for transaction and service-related purposes.";
 
   const [step, setStep] = useState(1);
   const [isTeamSelected, setIsTeamSelected] = useState(false); // Use 'value' instead of 'defaultValue'
@@ -311,25 +323,47 @@ const TeamManagerSignup = () => {
 
   const toStep2 = (e: FormEvent) => {
     e.preventDefault();
-    console.log(teamManager);
+
+    /// validations here
+    if (
+      teamManager.password !== teamManager.passwordConfirmation ||
+      teamManager.password === "" ||
+      teamManager.passwordConfirmation === ""
+    ) {
+      setError("Passwords do not match");
+      teamManager.password = "";
+      teamManager.passwordConfirmation = "";
+
+      return;
+    }
+    if (teamManager.password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+
     setStep(2); // Move to the next step
   };
 
-  const toStep1 = async  (e: FormEvent) => {
+  const toStep1 = async (e: FormEvent) => {
     e.preventDefault();
+    console.log(teamManager);
+
     try {
       await connectMetamask();
       await connectContract();
-      console.log("Full Name :");
-      console.log(`${teamManager.firstName} ${teamManager.lastName}`);
       await acceptRights(`${teamManager.firstName} ${teamManager.lastName}`); // Assuming acceptRights is an asynchronous function
-      createTeamManagerHandler(e).then((r) => console.log(r));
     } catch (error) {
       console.error(error);
-      console.log("An error occurred during the process");
+      toast.error((error as any).message);
+      setErrorB(true);
+      return;
     }
-  
-    // setStep(1); // Move to the next step
+
+    if (errorB) return;
+    else {
+      createTeamManagerHandler(e).then((r) => console.log(r));
+      router.push("/auth/signin");
+    }
   };
 
   return (
@@ -343,7 +377,10 @@ const TeamManagerSignup = () => {
         fontFamily: "sans-serif",
         fontWeight: "550",
         fontSize: "30px",
+        backgroundColor: loading ? "transparent" : "rgba(0,0,0,.5)",
+
       }}
+       
     >
       {step === 1 && (
         <form onSubmit={toStep2}>
@@ -468,7 +505,19 @@ const TeamManagerSignup = () => {
               <label htmlFor="age">Age</label>
             </div>
           </div>
+          {error && (
+            <div
+              style={{
+                color: "red",
 
+                fontSize: "22px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              {error}
+            </div>
+          )}
           <div className="buttun">
             <button type="submit">
               <span />
@@ -481,7 +530,7 @@ const TeamManagerSignup = () => {
         </form>
       )}
 
-      {step === 2 && (
+      {step === 2 && !loading && (
         <div>
           <TableTail parentFn={parentFn} />
 
@@ -489,16 +538,32 @@ const TeamManagerSignup = () => {
             <div>
               <form onSubmit={toStep1}>
                 {/* Checkbox for accepting terms */}
+                <Tooltip
+                  content={
+                    <div>
+                      <p>
+                        User Wallet Address: By using our services,
+                        <br />
+                        you agree to provide and store your cryptocurrency
+                        wallet address <br /> with DAMAN for transaction and
+                        service-related purposes.
+                      </p>
+                    </div>
+                  }
+                  color="danger"
+                >
+                  <div>
+                    <Checkbox color="danger" className="pl-10">
+                      <span className="w-[30%] text-small text-default-400 m-3">
+                        Accept Terms and Conditions
+                      </span>
 
-                <Checkbox color="danger" className="pl-10">
-                  <span className="w-[30%] text-small text-default-400 m-3">
-                    Accept Terms and Conditions
-                  </span>
-
-                  <Tooltip content={tooltipText} color="danger">
-                    <span className="ml-2" color="danger"  >?</span>
-                  </Tooltip>
-                </Checkbox>
+                      <span className="ml-2" color="danger">
+                        ?
+                      </span>
+                    </Checkbox>
+                  </div>
+                </Tooltip>
 
                 <div
                   className="buttun"
@@ -517,6 +582,19 @@ const TeamManagerSignup = () => {
               </form>
             </div>
           )}
+        </div>
+      )}
+      {loading && (
+        <div className="p-6 ">
+          <h2>Loading ... </h2>
+          <span
+            className="loading-text text-muted"
+            style={{
+              fontSize: "20px",
+            }}
+          >
+            This might take a moment or two.
+          </span>
         </div>
       )}
 

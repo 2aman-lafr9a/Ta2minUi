@@ -10,7 +10,7 @@ import PlayerCard from "@/components/players/playerCard";
 import Link from "next/link";
 import { HouseIcon } from "@/components/icons/breadcrumb/house-icon";
 import { UsersIcon } from "@/components/icons/breadcrumb/users-icon";
-
+import Web3 from "web3";
 import {
   Modal,
   ModalContent,
@@ -20,6 +20,172 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import toast from "react-hot-toast";
+
+const contractAddress = "0x5428d444F3BADf2b9C20648282EBBA38d4556AbA";
+
+const contractABI = [
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "teamManager",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "agency",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "aman",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "offerName",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "offerPrice",
+        type: "uint256",
+      },
+    ],
+    name: "ContractSigned",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "agency",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "aman",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "contractDetails",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "offerPrice",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "offerName",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getContractDetails",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_agency",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "_offerName",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "_offerPrice",
+        type: "uint256",
+      },
+    ],
+    name: "signContract",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "teamManager",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
 
 // Import the GraphQL query for fetching offers
 const sampleOffers = [
@@ -29,11 +195,11 @@ const sampleOffers = [
     agency: {
       id: "1",
       name: "Awesome Agency",
-      adress: "2651365651237413248",
+      adress: "0x57ad9C908A791C2126c0Cba27E73298f7c26B6C3",
     },
     description:
       "Amazing offer for you! Amazing offer for you! Amazing offer for you! Amazing offer for you!",
-    price: 100,
+    price: 0.3,
     date: "2024-01-24",
     rating: 5,
     offerType: "Discount",
@@ -44,7 +210,7 @@ const sampleOffers = [
     agency: {
       id: "2",
       name: "Innovative Solutions",
-      adress: "2651365651237413248",
+      adress: "0x57ad9C908A791C2126c0Cba27E73298f7c26B6C3",
     },
     description: "Don't miss out on this exclusive deal! Limited time offer!",
     price: 75,
@@ -222,6 +388,77 @@ const RecomendationPage: React.FC = () => {
 
   //   // Sample: The rest of the offers
   //   const otherOffers = data.getOffers.slice(5);
+
+  //     // Define a variable to store the account address
+  let account: any;
+  //     // Define the contract instance
+  let contract: any;
+  let prix: Number;
+  // execute the script web3 '
+  const [loading, setLoading] = useState(false);
+  // // Define a function to connect MetaMask
+  const connectMetamask = async () => {
+    try {
+      if ((window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        account = accounts[0];
+        console.log(account);
+      } else {
+        console.log("Please install Metamask or use a web3 browser");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error((error as any).message);
+    }
+  };
+  // // Define a function to connect the contract
+  const connectContract = async () => {
+    try {
+      if (account) {
+        (window as any).web3 = new Web3((window as any).ethereum);
+        contract = new (window as any).web3.eth.Contract(
+          contractABI,
+          contractAddress
+        );
+        console.log("Connected to contract at address: " + contractAddress);
+      } else {
+        console.log("Please connect to MetaMask first");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error((error as any).message);
+    }
+  };
+
+  // // Define a function to accept rights
+  const signContract = async (
+    agency?: String,
+    offerName?: String,
+    offerPrice?: Number
+  ) => {
+    try {
+      setLoading(true);
+      if (account && contract) {
+        // Convert offerPrice to wei
+        const offerPriceWei = (window as any).web3.utils.toWei(
+          offerPrice?.toString() ?? "0",
+          "ether"
+        );
+
+        await contract.methods
+          .signContract(agency, offerName, offerPriceWei)
+          .send({ from: account, value: offerPriceWei });
+      } else {
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error((error as any).message);
+      setLoading(false);
+    }
+  };
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleOpen = () => {
@@ -235,10 +472,25 @@ const RecomendationPage: React.FC = () => {
     onOpen();
   };
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     console.log(
       `Offer clicked: ${selectedOffer?.name}, address of the agency: ${selectedOffer?.agency.adress}`
     );
+
+    try {
+      await connectMetamask();
+      await connectContract();
+      await signContract(
+        selectedOffer?.agency.adress,
+        selectedOffer?.name,
+        selectedOffer?.price
+      ); // Assuming acceptRights is an asynchronous function
+      // createAgencyHandler;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // Set loading to false when the function completes (success or error)
+    }
     onClose();
   };
 
@@ -371,27 +623,54 @@ const RecomendationPage: React.FC = () => {
         </div>
         {/* Display the top 5 recommended offers */}
       </div>
-      <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
+      <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose} isDismissable={false}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Terms and Conditions
+                {
+                  loading ? (
+                    <h1>Loading ...</h1>
+                  ) :(
+                    <h1>Terms and Conditions</h1>
+                  )
+                }
+              
               </ModalHeader>
               <ModalBody>
-                <p>
+                {loading ? (
+                  <div className=" justify-center items-center text-bold">
+                   <div className="flex justify-center">
+                   <Spinner color="danger" />
+                   </div>
+
+                   <div className="flex justify-center">
+                   <p>
+                      Please wait while we process your transaction. This might
+                      take a while.
+                    </p>
+                   </div>
+                  </div>
+                ):(
+                  <p>
                   Please read the terms and conditions carefully before
                   accepting the offer.
                 </p>
+                )
+              }
                 {/* Display your terms and conditions here */}
               </ModalBody>
               <ModalFooter>
-                <Button color="secondary" variant="light" onPress={onClose}>
-                  Decline
-                </Button>
-                <Button color="primary" onPress={handleAccept}>
-                  Accept
-                </Button>
+                {!loading && (
+                   <>
+                   <Button color="secondary" variant="light" onPress={onClose}>
+                     Decline
+                   </Button>
+                   <Button color="primary" onPress={handleAccept}>
+                     Accept
+                   </Button>
+                 </>
+                )  }
               </ModalFooter>
             </>
           )}

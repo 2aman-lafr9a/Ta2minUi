@@ -1,6 +1,6 @@
 import React from "react";
 import { Sidebar } from "./sidebar.styles";
-import { Avatar, Tooltip } from "@nextui-org/react";
+import { Avatar, Divider, Tooltip } from "@nextui-org/react";
 import { CompaniesDropdown } from "./companies-dropdown";
 import { HomeIcon } from "../icons/sidebar/home-icon";
 import { PaymentsIcon } from "../icons/sidebar/payments-icon";
@@ -26,15 +26,18 @@ import { PlayersIcon } from "../icons/sidebar/players-icon";
 import { ContractIcon } from "../icons/sidebar/contract-icon";
 import { LogoutIcon } from "../icons/sidebar/logout-icon";
 import { StarIcon } from "../icons/sidebar/star-icon";
+import { useRouter } from "next/navigation";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
   const { collapsed, setCollapsed } = useSidebarContext();
+  const Router = useRouter();
   const isAuthRoute = () => {
     return (
       pathname === "/auth/signin" ||
       pathname === "/auth/signup/teammanager" ||
-      pathname === "/auth/signup/agency"
+      pathname === "/auth/signup/agency" ||
+      pathname === "/auth"
     );
   };
   return (
@@ -66,7 +69,11 @@ export const SidebarWrapper = () => {
                   href="/"
                 />
               </motion.div>
-
+              <Divider
+                style={{
+                  margin: "20px 0px 40px 0px",
+                }}
+              />
               <SidebarMenu title="Main Menu">
                 <motion.div
                   style={{
@@ -133,6 +140,20 @@ export const SidebarWrapper = () => {
                   whileTap={{ scale: 0.8 }}
                 >
                   <SidebarItem
+                    isActive={pathname === "/recomendation"}
+                    title="Recomendation"
+                    icon={<FilterIcon />}
+                    href="recomendation"
+                  />
+                </motion.div>
+                <motion.div
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <SidebarItem
                     isActive={pathname === "/rr"}
                     title=""
                     icon={<PlusIcon />}
@@ -180,7 +201,10 @@ export const SidebarWrapper = () => {
                 </motion.div>
               </SidebarMenu>
             </div>
-            <div className={Sidebar.Footer()}>
+            <div
+              className={Sidebar.Footer()}
+              onClick={() => Router.push("/auth")}
+            >
               <Tooltip content={"LOGOUT"} color="danger">
                 <motion.div
                   style={{
@@ -192,7 +216,7 @@ export const SidebarWrapper = () => {
                   {/* Logout text in span with colore red and bold font  */}
                   <span className="text-red-500 font-bold">
                     <div className="flex justify-between">
-                    <LogoutIcon />  &nbsp;   LOGOUT
+                      <LogoutIcon /> &nbsp; LOGOUT
                     </div>
                   </span>
                 </motion.div>

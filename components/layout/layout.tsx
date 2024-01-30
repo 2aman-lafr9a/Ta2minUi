@@ -21,7 +21,8 @@ export const Layout = ({ children }: Props) => {
     return (
       window.location.pathname === "/auth/signin" ||
       window.location.pathname === "/auth/signup/teammanager"||
-      window.location.pathname === "/auth/signup/teammember"
+      window.location.pathname === "/auth/signup/teammember" ||
+      window.location.pathname === "/auth"
     );
   };
   return (

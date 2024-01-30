@@ -7,10 +7,10 @@ import HomeTeamManeger from "@/components/home/teammanager";
 import HomeAgency from "@/components/home/agency";
 
 const Home: NextPage = () => {
-    
+
   const router = useRouter();
   const isAuth: Boolean = true; // Change this to your actual authentication check
-  const whosAuth: String = "agency";
+  const whosAuth: String = "agencysa";
 
 
   return (
